@@ -116,135 +116,174 @@ function sendMessage() {
     input.value = "";
 }
 
-let localVideo = document.getElementById("localVideo");
-let remoteVideo = document.getElementById("remoteVideo");
-let localStream;
+function VideoPipe(stream, handler) {
+    let servers = null;
+    let pc1 = new RTCPeerConnection(servers);
+    let pc2 = new RTCPeerConnection(servers);
 
-navigator.mediaDevices
-    .getUserMedia({
-        video: true,
-        audio: false,
-    })
-    .then(gotStream)
-    .catch((error) => console.error(error));
-
-function gotStream(stream) {
-    console.log("Adding local stream");
-    localStream = stream;
-    localVideo.srcObject = stream;
-    sendMessage("got user media");
-    if (isInitiator) {
-        maybeStart();
-    }
-}
-
-function maybeStart() {
-    console.log(">>MaybeStart() : ", isStarted, localStream, isChannelReady);
-    if (!isStarted && typeof localStream !== "undefined" && isChannelReady) {
-        console.log(">>>>> creating peer connection");
-        createPeerConnection();
-        pc.addStream(localStream);
-        isStarted = true;
-        console.log("isInitiator : ", isInitiator);
-        if (isInitiator) {
-            doCall();
+    pc1.addStream(stream);
+    pc1.onicecandidate = function(event) {
+        if (event.candidate) {
+            pc2.addIceCandidate(new RTCIceCandidate(event.candidate),
+                noAction, errorHandler('AddIceCandidate'));
         }
-    }else{
-        console.error('maybeStart not Started!');
-    }
-}
-
-function doCall() {
-    console.log("Sending offer to peer");
-    pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
-}
-
-function doAnswer() {
-    console.log("Sending answer to peer");
-    pc.createAnswer().then(
-        setLocalAndSendMessage,
-        onCreateSessionDescriptionError
-    );
-}
-
-function setLocalAndSendMessage(sessionDescription) {
-    pc.setLocalDescription(sessionDescription);
-    sendMessage(sessionDescription);
-}
-
-let pcConfig = {
-    'iceServers': [{
-        'urls': 'stun:stun.l.google.com:19302'
-    }]
-}
-
-socket.on('message', (message)=>{
-    console.log('Client received message :',message);
-    if(message === 'got user media'){
-        maybeStart();
-    }else if(message.type === 'offer'){
-        if(!isInitiator && !isStarted){
-            maybeStart();
+    };
+    pc2.onicecandidate = function(event) {
+        if (event.candidate) {
+            pc1.addIceCandidate(new RTCIceCandidate(event.candidate),
+                noAction, errorHandler('AddIceCandidate'));
         }
-        pc.setRemoteDescription(new RTCSessionDescription(message));
-        doAnswer();
-    }else if(message.type ==='answer' && isStarted){
-        pc.setRemoteDescription(new RTCSessionDescription(message));
-    }else if(message.type ==='candidate' &&isStarted){
-        const candidate = new RTCIceCandidate({
-            sdpMLineIndex : message.label,
-            candidate:message.candidate
-        });
+    };
+    pc2.onaddstream = function(e) {
+        handler(e.stream);
+    };
+    pc1.createOffer(function(desc) {
+        pc1.setLocalDescription(desc);
+        pc2.setRemoteDescription(desc);
+        pc2.createAnswer(function(desc2) {
+            pc2.setLocalDescription(desc2);
+            pc1.setRemoteDescription(desc2);
+        }, errorHandler('pc2.createAnswer'));
+    }, errorHandler('pc1.createOffer'));
+    this.pc1 = pc1;
+    this.pc2 = pc2;
+}
 
-        pc.addIceCandidate(candidate);
-    }
-})
-
-const http = require('http');
-const os = require('os');
-const socketIO = require('socket.io');
-const nodeStatic = require('node-static');
-
-let fileServer = new(nodeStatic.Server)();
-let app = http.createServer((req,res)=>{
-    fileServer.serve(req,res);
-}).listen(8080);
-
-let io = socketIO.listen(app);
-io.sockets.on('connection',socket=>{
-    function log() {
-        let array = ['Message from server:'];
-        array.push.apply(array,arguments);
-        socket.emit('log',array);
-    }
-
-    socket.on('message',message=>{
-        log('Client said : ' ,message);
-        socket.broadcast.emit('message',message);
-    });
-
-    socket.on('create or join',room=>{
-        let clientsInRoom = io.sockets.adapter.rooms[room];
-        let numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
-        log('Room ' + room + ' now has ' + numClients + ' client(s)');
-
-        if(numClients === 0){
-            console.log('create room!');
-            socket.join(room);
-            log('Client ID ' + socket.id + ' created room ' + room);
-            socket.emit('created',room,socket.id);
-        }
-        else if(numClients===1){
-            console.log('join room!');
-            log('Client Id' + socket.id + 'joined room' + room);
-            io.sockets.in(room).emit('join',room);
-            socket.join(room);
-            socket.emit('joined',room,socket.id);
-            io.sockets.in(room).emit('ready');
-        }else{
-            socket.emit('full',room);
-        }
-    });
+VideoPipe.prototype.close = function() {
+    this.pc1.close();
+    this.pc2.close();
+};
 
 
-});
+// let localVideo = document.getElementById("localVideo");
+// let remoteVideo = document.getElementById("remoteVideo");
+// let localStream;
+//
+// navigator.mediaDevices
+//     .getUserMedia({
+//         video: true,
+//         audio: false,
+//     })
+//     .then(gotStream)
+//     .catch((error) => console.error(error));
+//
+// function gotStream(stream) {
+//     console.log("Adding local stream");
+//     localStream = stream;
+//     localVideo.srcObject = stream;
+//     sendMessage("got user media");
+//     if (isInitiator) {
+//         maybeStart();
+//     }
+// }
+//
+// function maybeStart() {
+//     console.log(">>MaybeStart() : ", isStarted, localStream, isChannelReady);
+//     if (!isStarted && typeof localStream !== "undefined" && isChannelReady) {
+//         console.log(">>>>> creating peer connection");
+//         createPeerConnection();
+//         pc.addStream(localStream);
+//         isStarted = true;
+//         console.log("isInitiator : ", isInitiator);
+//         if (isInitiator) {
+//             doCall();
+//         }
+//     }else{
+//         console.error('maybeStart not Started!');
+//     }
+// }
+//
+// function doCall() {
+//     console.log("Sending offer to peer");
+//     pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
+// }
+//
+// function doAnswer() {
+//     console.log("Sending answer to peer");
+//     pc.createAnswer().then(
+//         setLocalAndSendMessage,
+//         onCreateSessionDescriptionError
+//     );
+// }
+//
+// function setLocalAndSendMessage(sessionDescription) {
+//     pc.setLocalDescription(sessionDescription);
+//     sendMessage(sessionDescription);
+// }
+//
+// let pcConfig = {
+//     'iceServers': [{
+//         'urls': 'stun:stun.l.google.com:19302'
+//     }]
+// }
+//
+// socket.on('message', (message)=>{
+//     console.log('Client received message :',message);
+//     if(message === 'got user media'){
+//         maybeStart();
+//     }else if(message.type === 'offer'){
+//         if(!isInitiator && !isStarted){
+//             maybeStart();
+//         }
+//         pc.setRemoteDescription(new RTCSessionDescription(message));
+//         doAnswer();
+//     }else if(message.type ==='answer' && isStarted){
+//         pc.setRemoteDescription(new RTCSessionDescription(message));
+//     }else if(message.type ==='candidate' &&isStarted){
+//         const candidate = new RTCIceCandidate({
+//             sdpMLineIndex : message.label,
+//             candidate:message.candidate
+//         });
+//
+//         pc.addIceCandidate(candidate);
+//     }
+// })
+//
+// const http = require('http');
+// const os = require('os');
+// const socketIO = require('socket.io');
+// const nodeStatic = require('node-static');
+//
+// let fileServer = new(nodeStatic.Server)();
+// let app = http.createServer((req,res)=>{
+//     fileServer.serve(req,res);
+// }).listen(8080);
+//
+// let io = socketIO.listen(app);
+// io.sockets.on('connection',socket=>{
+//     function log() {
+//         let array = ['Message from server:'];
+//         array.push.apply(array,arguments);
+//         socket.emit('log',array);
+//     }
+//
+//     socket.on('message',message=>{
+//         log('Client said : ' ,message);
+//         socket.broadcast.emit('message',message);
+//     });
+//
+//     socket.on('create or join',room=>{
+//         let clientsInRoom = io.sockets.adapter.rooms[room];
+//         let numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+//         log('Room ' + room + ' now has ' + numClients + ' client(s)');
+//
+//         if(numClients === 0){
+//             console.log('create room!');
+//             socket.join(room);
+//             log('Client ID ' + socket.id + ' created room ' + room);
+//             socket.emit('created',room,socket.id);
+//         }
+//         else if(numClients===1){
+//             console.log('join room!');
+//             log('Client Id' + socket.id + 'joined room' + room);
+//             io.sockets.in(room).emit('join',room);
+//             socket.join(room);
+//             socket.emit('joined',room,socket.id);
+//             io.sockets.in(room).emit('ready');
+//         }else{
+//             socket.emit('full',room);
+//         }
+//     });
+//
+//
+// });
