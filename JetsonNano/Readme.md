@@ -33,3 +33,5 @@ Capstone_project2 폴더 <br>
 
 ### Robotics
 #### Jetson Nano + JetBot 관련 정보 기록
+JetBot AI Kit Waveshare wiki : [공식위키](https://www.waveshare.com/wiki/JetBot_AI_Kit) <br>
+조립 설명서 : [공식홈페이지](https://www.waveshare.com/wiki/JetBot_AI_Kit_Assemble_Manual) <br>
