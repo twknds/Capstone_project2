@@ -26,6 +26,12 @@ python3.7 & python3.8 경로 : /usr/local/bin <br>
 
 <hr>
 
+### OpenCV
+####
+CSI 사용 : [Nvidia 지원 홈페이지](https://developer.nvidia.com/embedded/learn/tutorials/first-picture-csi-usb-camera#CameraGuide-SupportedCameras)
+
+<hr>
+
 ### Github
 Capstone_project2 폴더 <br>
 
