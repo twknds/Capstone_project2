@@ -37,6 +37,7 @@ JetBot AI Kit Waveshare wiki : [공식위키](https://www.waveshare.com/wiki/Jet
 조립 설명서 : [공식홈페이지](https://www.waveshare.com/wiki/JetBot_AI_Kit_Assemble_Manual) <br>
 
 <hr>
+
 ### 문제점
 #### JetsonNano 사용에 있어서 문제점을 기록해놓는다.
 충전지(구입예정) <br>
