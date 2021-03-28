@@ -50,3 +50,4 @@ JetBot AI Kit Waveshare wiki : [공식위키](https://www.waveshare.com/wiki/Jet
 트랙 재료(구입예정) <br>
 터치 스크린(사용불가) <br>
 Jetbot 조립 <br>
+OpenCV -> import 오류 (파이썬 삭제 후 재설치 예정) <br>
