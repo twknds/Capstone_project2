@@ -39,7 +39,7 @@ function noAction() {
 
 function VideoPipe(stream, handler) {
     let servers = null;
-    let pc1 = new RTCPeerConnection(servers);
+    let pc1 = new RTCPeerConnection(servers);//
     let pc2 = new RTCPeerConnection(servers);
 
     pc1.addStream(stream);

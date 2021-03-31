@@ -10,7 +10,7 @@
 
 - [Guide to WebRTC를 읽으면서 정리한 것들.](#guide-to-webrtc를-읽으면서-정리한-것들)
   - [목차](#목차)
-  - [- Sending a Message](#--sending-a-message)
+  - [- Using TURN](#--using-turn)
   - [Overview](#overview)
   - [Fundamentals anc Concepts of WebRTC](#fundamentals-anc-concepts-of-webrtc)
     - [보통의 커뮤니케이션](#보통의-커뮤니케이션)
@@ -29,6 +29,14 @@
     - [Receiving the Offer](#receiving-the-offer)
     - [Receiving the Answer](#receiving-the-answer)
   - [Sending a Message](#sending-a-message)
+  - [Adding Video and Audio Channels](#adding-video-and-audio-channels)
+    - [Obtaining the Media Stream](#obtaining-the-media-stream)
+    - [Sending the Stream](#sending-the-stream)
+    - [Receiving the Stream](#receiving-the-stream)
+  - [NAT Issues](#nat-issues)
+  - [Using STUN](#using-stun)
+  - [Using TURN](#using-turn)
+  - [Conclusion](#conclusion)
 ---
 
 ## Overview
@@ -368,4 +376,127 @@ peerConnection.ondatechannel = function(event){
 
 ---
 
-Adding Video 
+## Adding Video and Audio Channels
+
+WebRTC가 P2P 연결이 만들어졌을때, audio와 video streams들을 직접 쉽게 전송할 수 있다.
+
+### Obtaining the Media Stream
+
+우선, browser로부터 media stream을 얻어야한다.<br>
+WebRTC는 아래의 API를 제공한다.
+```javascript
+const constraints = {
+    video: true, audio : true
+};
+navigator.mediaDevices.getUserMedia(constraints).
+    then(function(stream){/*use the stream*/})
+        .catch(function(err)){/*handle the error*/});
+```
+
+**constraints object를 사용함으로써 frame rate, video의 가로 세로를 특정지을 수 있다.**
+
+constraint object은 또한 mobile 장치들이 사용하는 카메라를 특정짓는것도 하게끔한다.
+```javascript
+var constraints = {
+    video : {
+        frameRate : {
+            ideal : 10,
+            max : 15
+        },
+        width : 1280,
+        height : 720,
+        facingMode : "user"
+    }
+};
+```
+또한, 만약 후면 카메라를 원한다면 "user" 대신 "environment"로 facingMode의 값을 설정할 수 있다.
+
+### Sending the Stream
+두번째로, WebRTC 피어 연결 개체에 스트림을 추가해야 한다.
+```javascript
+peerConnection.addStream(stream);
+```
+peer connection에 stream을 추가하는 것은 연결된 peers들에게 addstream event를 야기한다.
+
+### Receiving the Stream
+
+셋째, 원격 피어에서 스트림을 수신하기 위해 listener를 만들 수 있다.
+
+HTML video element에 이 stream을 설정하자
+```javascript
+peerConnection.onaddstream = function(event){
+    videoElement.srcObject = event.stream;
+};
+```
+
+---
+
+## NAT Issues
+
+방화벽과 NAT(Network Address Traversal) 장치들은 우리의 장치들을 public Internet에 연결한다.
+
+NAT은 장치에 로컬 네트워크 내에서 사용할 IP 주소를 제공한다.그래서, 이 주소는 로컬 네트워크 외부에서 액세스할 수 없다. 공용 주소가 없으면, peers들은 우리와 통신할 수 없다.
+
+이 문제를 해결하기 위해서, WebRTC는 2가지 메커니즘을 사용한다.
+1. STUN
+2. TURN
+
+---
+
+## Using STUN
+
+STUN은 이 문제의 간단한 접근방법이다. network 정보를 peer간에 공유하기전에, client는 STUN server에 요청을한다. **STUN 서버의 책임은 요청을 수신하는 IP 주소를 반환하는 것이다.**
+
+그래서, STUN server에 질의응답을 함으로써, 우리는 public-facing IP address를 가짐.
+
+그런 다음 이 IP와 port 정보를 연결할 peer에 공유한다.
+
+다른 peers들은 그들의 public-facing IP들을 공유하기 위해 똑같은 짓을 한다.
+
+STUN server를 사용하기 위해서는, 우리는 RTCPeerConnection object를 만들어 configuration object안에서 URL을 간단하게 전송할 수 있다
+```javascript
+var configuration = {
+    "iceServers" : [{
+        "url" : "stun:stun2.1.google.com:19302"
+    }]
+}
+```
+
+---
+
+## Using TURN
+
+대조적으로, TURN은 WebRTC가 P2P 연결을 할 수 없을때 사용되는 fallback mechanism이다. **TURN server의 역할은 peers 사이에 직접 data를 중계해주는것이다.** 이러한 경우, TURN servers를 통해 data의 실제 stream이 흐른다. TURN servers 또한 STUN servers와 같이 동작한다.
+
+TURN servers는 공개적으로 사용할 수 있으며, client는 방화벽 또는 프록시 뒤에 있더라도 서버에 접근할 수 있다.
+
+그러나, TURN server의 사용은 사실 P2P 연결이 아니고 중계 서버가 존재하는 것이다.
+
+**참고: TURN은 P2P 연결을 설정할 수 없을때의 마지막 수단이다.** 데이터가 TURN 서버를 통해 흐르므로 많은 대역폭이 필요하며, 이 경우 P2P 사용을 하지 않는다.
+
+```javascript
+{
+    'iceServers':[
+        {
+            'urls':'stun:stun.l.google.com:19302'
+        },
+        {
+            'urls': 'turn:10.158.29.39:3478?transport=udp',
+            'credential': 'XXXXXXXXXX',
+            'username': 'XXXXXXXXXXXX'
+        },
+        {
+            'urls': 'turn:10.158.29.39:3478?transport=tcp',
+            'credential': 'XXXXXXXXXX',
+            'username' : 'XXXXXXXXXXX'
+        }
+    ]
+}
+
+```
+
+---
+
+## Conclusion
+
+여기서 WebRTC 프로젝트가 무엇인지 기본적인 개념이 무엇인지 알아봤다. 그러면 우리는 2개의 HTML clients 사이에 data를 공유하는 간단한 application을 만들었다.
