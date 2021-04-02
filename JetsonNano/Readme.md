@@ -15,9 +15,9 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 ### 파이썬
 #### Jetson Nano오류로 인해 파이썬 3.6 인터프리터 사용.
  - 설치 List
-  -- pip3
-  -- pytorch
-  -- [csi-camera설치] (https://blog.daum.net/ejleep1/1010)
+   - pip3
+   - pytorch
+   - [csi-camera설치] (https://blog.daum.net/ejleep1/1010)
 
 <hr>
 
