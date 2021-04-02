@@ -3,21 +3,21 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 
 <hr>
 
-~~### 파이참
-#### 파이썬 버전 및 패키지 관리 용이를 위해 파이참을 사용한다.
-경로 : ~/Download/pycharm-2020.3.5/bin/ <br>
-./pycharm.sh(실행) <br>
-venv python 버전 : python3.7 & python3.8 <br>
-python3.7 & python3.8 경로 : /usr/local/bin <br>
-설치 모듈(패키지) : Robot(예정) <br>
+~~### 파이참~~
+~~#### 파이썬 버전 및 패키지 관리 용이를 위해 파이참을 사용한다.~~
+~~경로 : ~/Download/pycharm-2020.3.5/bin/ <br>~~
+~~./pycharm.sh(실행) <br>~~
+~~venv python 버전 : python3.7 & python3.8 <br>~~
+~~python3.7 & python3.8 경로 : /usr/local/bin <br>~~
+~~설치 모듈(패키지) : Robot(예정) <br>~~
 
 
 ### 파이썬
 #### Jetson Nano오류로 인해 파이썬 3.6 인터프리터 사용.
  - 설치 List
-  - pip3
-  - pytorch
-  - [csi-camera설치] (https://blog.daum.net/ejleep1/1010)
+  -- pip3
+  -- pytorch
+  -- [csi-camera설치] (https://blog.daum.net/ejleep1/1010)
 
 <hr>
 
