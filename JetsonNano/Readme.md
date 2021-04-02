@@ -17,7 +17,7 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
  - 설치 List
    - pip3
    - pytorch
-   - [csi-camera설치] (https://blog.daum.net/ejleep1/1010)
+   - [csi-camera설치](https://blog.daum.net/ejleep1/1010)
 
 <hr>
 
