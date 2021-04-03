@@ -51,7 +51,7 @@ CSI 사용 : [Nvidia 지원 홈페이지](https://developer.nvidia.com/embedded/
 
 노트북에 jupyter lab 설치 완료
 - terminal (jupyter lab)
-- web browser에 <jet bot ip address>:8888로 연결 -> jupyter
+- web browser에 (jet bot ip address):8888로 연결 -> jupyter
 
 <hr>
 
