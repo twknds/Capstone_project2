@@ -33,6 +33,7 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 #### Jetson Nano + JetBot 관련 정보 기록
 JetBot AI Kit Waveshare wiki : [공식위키](https://www.waveshare.com/wiki/JetBot_AI_Kit) <br>
 조립 설명서 : [공식홈페이지](https://www.waveshare.com/wiki/JetBot_AI_Kit_Assemble_Manual) <br>
+학교 와이파이 연결 : [블로그](https://csj000714.tistory.com/129)<br>
 
 <hr>
 
@@ -48,8 +49,9 @@ CSI 사용 : [Nvidia 지원 홈페이지](https://developer.nvidia.com/embedded/
 커맨드 : python -m notebook <br>
 참조홈페이지 : [Jupyter Lab](https://evergrow.tistory.com/96)설정<br>
 
-노트북에 jupyter lab 설치 완료.
+노트북에 jupyter lab 설치 완료
 - terminal (jupyter lab)
+- web browser에 <jet bot ip address>:8888로 연결 -> jupyter
 
 <hr>
 
