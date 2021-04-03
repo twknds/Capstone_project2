@@ -1,3 +1,4 @@
+
 # 개발환경
 Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 
@@ -7,13 +8,13 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 
 ~~#### 파이썬 버전 및 패키지 관리 용이를 위해 파이참을 사용한다.~~
 
-~~경로 : ~/Download/pycharm-2020.3.5/bin/~~
+ ~~경로 :  &#126;/Download/pycharm-2020.3.5/bin/~~
 
-~~./pycharm.sh(실행) ~~
+~~./pycharm.sh(실행)~~
 
-~~venv python 버전 : python3.7 & python3.8 ~~
+~~venv python 버전 : python3.7 & python3.8~~
 
-~~python3.7 & python3.8 경로 : /usr/local/bin ~~
+~~python3.7 & python3.8 경로 : /usr/local/bin~~
 
 ~~설치 모듈(패키지) : Robot(예정)~~
 
