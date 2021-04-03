@@ -48,6 +48,9 @@ CSI 사용 : [Nvidia 지원 홈페이지](https://developer.nvidia.com/embedded/
 커맨드 : python -m notebook <br>
 참조홈페이지 : [Jupyter Lab](https://evergrow.tistory.com/96)설정<br>
 
+노트북에 jupyter lab 설치 완료.
+- terminal (jupyter lab)
+
 <hr>
 
 ### Django
