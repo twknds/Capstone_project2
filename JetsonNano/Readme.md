@@ -1,17 +1,21 @@
 # 개발환경
 Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
 
-
-
 <hr>
 
 ~~### 파이참~~
+
 ~~#### 파이썬 버전 및 패키지 관리 용이를 위해 파이참을 사용한다.~~
-~~경로 : ~/Download/pycharm-2020.3.5/bin/ <br>~~
-~~./pycharm.sh(실행) <br>~~
-~~venv python 버전 : python3.7 & python3.8 <br>~~
-~~python3.7 & python3.8 경로 : /usr/local/bin <br>~~
-~~설치 모듈(패키지) : Robot(예정) <br>~~
+
+~~경로 : ~/Download/pycharm-2020.3.5/bin/~~
+
+~~./pycharm.sh(실행) ~~
+
+~~venv python 버전 : python3.7 & python3.8 ~~
+
+~~python3.7 & python3.8 경로 : /usr/local/bin ~~
+
+~~설치 모듈(패키지) : Robot(예정)~~
 
 
 ### 파이썬
@@ -19,7 +23,8 @@ Jetson Nano에 관련된 개발환경 설정을 기록해놓는다.
  - 설치 List
    - pip3
    - pytorch
-   - [csi-camera설치](https://blog.daum.net/ejleep1/1010)
+   - OpenCV
+   - ~~[csi-camera설치](https://blog.daum.net/ejleep1/1010)~~
 
 <hr>
 
@@ -40,7 +45,7 @@ CSI 사용 : [Nvidia 지원 홈페이지](https://developer.nvidia.com/embedded/
 #### 파이썬 웹 실행
 참고 : [블로그](https://austcoconut.tistory.com/entry/%EB%AC%B4%EC%9E%91%EC%A0%95-%EB%94%B0%EB%9D%BC-%ED%95%98%EA%B8%B0-LinuxUbuntu%EC%97%90%EC%84%9C-Jupyer-Notebook-%EC%84%9C%EB%B2%84-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95) <br>
 커맨드 : python -m notebook <br>
-[Jupyter Lab](https://evergrow.tistory.com/96)설정<br>
+참조홈페이지 : [Jupyter Lab](https://evergrow.tistory.com/96)설정<br>
 
 <hr>
 
