@@ -23,4 +23,4 @@
 
 그리고 `https:{ip주소}:3000`으로 pc와 휴대폰으로 접속하면 아래와 같이 둘 다 카메라 화면이 보인다.<br>
 
-![webRTC2](./webRTC2.JPG)
+![webRTC2](./webRTC2.jpg)
