@@ -8,7 +8,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+//TextWebSocketHandler
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
@@ -23,6 +23,8 @@ public class SocketHandler extends TextWebSocketHandler {
             }
         }
     }
+
+
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {

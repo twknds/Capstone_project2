@@ -10,7 +10,6 @@
 
 - [Guide to WebRTC를 읽으면서 정리한 것들.](#guide-to-webrtc를-읽으면서-정리한-것들)
   - [목차](#목차)
-  - [- Using TURN](#--using-turn)
   - [Overview](#overview)
   - [Fundamentals anc Concepts of WebRTC](#fundamentals-anc-concepts-of-webrtc)
     - [보통의 커뮤니케이션](#보통의-커뮤니케이션)
@@ -37,6 +36,9 @@
   - [Using STUN](#using-stun)
   - [Using TURN](#using-turn)
   - [Conclusion](#conclusion)
+  - [SSL](#ssl)
+    - [http와 https의 차이점](#http와-https의-차이점)
+    - [SSL](#ssl-1)
 ---
 
 ## Overview
@@ -500,3 +502,20 @@ TURN servers는 공개적으로 사용할 수 있으며, client는 방화벽 또는 프록시 뒤에 있�
 ## Conclusion
 
 여기서 WebRTC 프로젝트가 무엇인지 기본적인 개념이 무엇인지 알아봤다. 그러면 우리는 2개의 HTML clients 사이에 data를 공유하는 간단한 application을 만들었다.
+
+---
+(~ing)
+## SSL
+
+참고 : https://blog.naver.com/skinfosec2000/222135874222
+
+### http와 https의 차이점
+옛날에는 URL이 http로 시작하는 사이트가 전부였지만, 요즘 공신력 있는 사이트 대부분은 `https`로 시작한다.
+
+이렇게 `https`를 통한 인터넷 접속은, 브라우저를 실행 중인 우리 컴퓨터(또는 휴대폰)가 해당 사이트의 서버와 `암호화 통신`을 하고 있다는 것을 의미.
+
+`https`를 이용한 인터넷 접속은 SSL(TLS)을 이용한 것이다.
+
+즉, SSL 암호화 통신은 `SSL(Secure Socket Layer)` 또는 `TLS(Transport Layer Security)`라는 보안 프로토콜을 통해 client(브라우저)와 server(웹 서버)가 보안이 향상된 통신을 말한다.
+
+### SSL
