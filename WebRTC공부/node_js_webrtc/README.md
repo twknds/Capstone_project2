@@ -1,6 +1,14 @@
 # Node.JS로 signaling server 구축 후 webRTC 사용
 
-참고 사이트 : https://forest71.tistory.com/211
+참고 사이트 : 
+1. https://forest71.tistory.com/211
+2. http://jmlim.github.io/spring/2019/09/30/spring-redirect-to-an-external-url/
+   - spring controller에서 redirect하는 법
+3. https://m.blog.naver.com/PostView.nhn?blogId=webakim&logNo=221130324766&proxyReferer=https:%2F%2Fwww.google.com%2F
+   - 로컬 서버 외부 접속 허용 방법
+4. http://hleecaster.com/local-web-server-ngrok/
+   - 로컬 호스트 외부에서 접속 가능하게 하는법 - ngrok
+
 
 ## 실행법 & 설명
 
@@ -27,3 +35,9 @@
 
 
 ## [아마존 aws에 nodeJS 웹 서버 만들기](https://blog-han.tistory.com/58)
+
+## 2021-04-22 call, callee 추가
+
+휴대폰(jetson nano라 생각)과 client(내 컴퓨터)에서 client에게 휴대폰의 화면만 실시간으로 보이게 함.
+
+![call_callee](./readme_img/call_callee.JPG)

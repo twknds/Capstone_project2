@@ -4,11 +4,13 @@ var os = require('os');
 var nodeStatic = require('node-static');
 
 
+
 //var http = require('http');
 var socketIO = require('socket.io');
 
 const https = require('https');
 const fs = require('fs');
+const { request } = require('http');
 
 const options = {
   key: fs.readFileSync('./private.pem'),
@@ -16,6 +18,7 @@ const options = {
 };
 
 var fileServer = new(nodeStatic.Server)();
+// const url = require('url');
 let app = https.createServer(options,(req,res)=>{
   fileServer.serve(req,res);
 }).listen(3000);

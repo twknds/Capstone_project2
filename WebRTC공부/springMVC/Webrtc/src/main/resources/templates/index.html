@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+</head>
+<body>
+<h1>메인 페이지</h1>
+
+<hr>
+<a th:href="@{/user/login}">로그인</a>
+<a th:href="@{/user/logout}">로그아웃</a>
+<a th:href="@{/user/signup}">회원가입</a>
+<a th:href="@{/user/info}">내정보</a>
+<a th:href="@{/admin}">어드민</a>
+
+
+<h1>spring-node test</h1>
+
+
+<form method="get" action="node">
+    <p><label>방 이름 : <input type="text" name="id"></label></p>
+    <p><input type="submit" value="입장하기"></p>
+</form>
+
+<!--<br>-->
+
+<!--<a href="https://172.30.1.34:3000/"-->
+<!--   target="_blank" style="text-decoration:none">join html link</a>-->
+
+<h1>room test</h1>
+<form method="get" action="call">
+    <p><input type="submit" value="jetsonNano 입장"></p>
+</form>
+
+<form method="get" action="callee">
+    <p><input type="submit" value="Computer 입장"></p>
+</form>
+
+</body>
+</html>
+
+
