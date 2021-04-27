@@ -6,7 +6,7 @@ class PwInput extends React.Component{
         return(
             <div>
                 <label className="PwInput">
-                    <input placeholder="Pw" type = "password"/>
+                    <input onChange={this.props.onChange} id = 'PW' placeholder="Pw" type = "password"/>
                 </label>
             </div>
         )

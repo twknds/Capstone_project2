@@ -1,0 +1,5 @@
+.localVideo{
+    max-width: 100%;
+    width: 320px;
+    border: 3px solid black;
+}

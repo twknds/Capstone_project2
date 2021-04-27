@@ -6,7 +6,7 @@ class IdInput extends React.Component{
         return(
             <div>
                 <label className="IdInput">
-                    <input placeholder = "Id" type = "text"/>
+                    <input onChange={this.props.onChange} name = 'ID' placeholder = "Id" type = "text"/>
                 </label>
             </div>
         )
