@@ -1,7 +1,8 @@
-'use strict';
+
 
 var os = require('os');
 var nodeStatic = require('node-static');
+var url = require('url')
 
 //var http = require('http');
 var socketIO = require('socket.io');
@@ -11,15 +12,16 @@ const fs = require('fs');
 const { request } = require('http');
 
 const options = {
-  key: fs.readFileSync('./private.pem'),
-  cert: fs.readFileSync('./public.pem')
+  key: fs.readFileSync('./server/private.pem'),
+  cert: fs.readFileSync('./server/public.pem')
 };
 
 var fileServer = new(nodeStatic.Server)();
 let app = https.createServer(options,(req,res)=>{
-  console.log(fileServer)
   fileServer.serve(req,res);
-}).listen(3000);
+}).listen(3000,() => {
+  console.log('port 3000 is open')
+});
 
 console.log('Started chating server...');
 
@@ -27,7 +29,7 @@ console.log('Started chating server...');
 //   fileServer.serve(req, res);
 // }).listen(8080);
 
-var io = socketIO.listen(app);
+var io = socketIO(app);
 io.sockets.on('connection', function(socket) {
 
   // convenience function to log server messages on the client
