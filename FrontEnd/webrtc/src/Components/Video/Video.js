@@ -6,22 +6,35 @@ class Video extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            localStream: null
+            localStream: null,
+            isInit : false,
+            pc : null
         }
     }
     gotLocalMediaStream = (mediaStream) => {
         document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
         this.setState({ localStream : mediaStream })
-        const socket = socketio.connect('http://localhost:8080')
-        socket.emit('localStream',{localStream: 'asd'})
-        console.log(this.state.localStream)
     }
     handleLocalMediaStreamError = (error) => console.log('navigator.getUserMedia error: ', error)
 
     componentDidMount() {
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(this.gotLocalMediaStream)
-            .catch(this.handleLocalMediaStreamError);
+        const socket = socketio.connect('http://localhost:8080')
+
+        socket.on('joinRoom', (data) => {
+            console.log(data.isInit)
+            this.setState({isInit : data.isInit})
+            if(this.state.isInit){ // Init
+                navigator.mediaDevices.getUserMedia({ video: true })
+                .then(this.gotLocalMediaStream)
+                .catch(this.handleLocalMediaStreamError)
+            }
+            else{ // Client
+               
+            }
+        })
+    }
+
+    handleIceCandidate = (event) => {
 
     }
 
@@ -33,18 +46,25 @@ class Video extends React.Component {
     }
 
     render() {
-        return (
+        if(this.state.isInit === true)
+            return (
+                <div>
+                    <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
+                    <video className='localVideo' autoPlay playsInline />
+                    <video className='remoteVideo' autoPlay playsInline />
+                    <div>
+                        <button className='startButton' onClick={this.handleClickStart}>Start</button>
+                        <button className='callButton'>Call</button>
+                        <button className='hangupButton'>Hang Up</button>
+                    </div>
+                </div>
+            )
+        else
+            return(
             <div>
                 <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-                <video className='localVideo' autoPlay playsInline />
-                <video className='remoteVideo' autoPlay playsInline />
-                <div>
-                    <button className='startButton' onClick={this.handleClickStart}>Start</button>
-                    <button className='callButton'>Call</button>
-                    <button className='hangupButton'>Hang Up</button>
-                </div>
-            </div>
-        )
+                    now you are client
+            </div>)
     }
 }
 export default Video
