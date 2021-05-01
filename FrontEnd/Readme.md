@@ -17,3 +17,5 @@
 ssh -i "<your pem key name>.pem" ubuntu@<your IPv4 Public IP>
   
  HTTPS=ture npm start
+
+https://isolution.pro/ko/q/au14230984/ubuntu-20-04-naj-eun-ssl-boan-sujun-eul-seoljeonghaneun-bangbeob-eun-mueos-ibnikka
