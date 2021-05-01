@@ -13,3 +13,7 @@
 [로드밸런서 및 https 요청](https://helloinyong.tistory.com/149)
 
 [Route53 + ACM](https://dev.classmethod.jp/articles/route53-acm-free-domain-https-certification/)
+
+ssh -i "<your pem key name>.pem" ubuntu@<your IPv4 Public IP>
+  
+ HTTPS=ture npm start
