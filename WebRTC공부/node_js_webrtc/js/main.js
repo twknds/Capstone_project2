@@ -22,7 +22,7 @@ var sdpConstraints = {
 
 /////////////////////////////////////////////
 
-var room = 'foo';
+var room = 'kihyun';
 // Could prompt for room name:
 // room = prompt('Enter room name:');
 
@@ -68,22 +68,30 @@ function sendMessage(message) {
 socket.on('message', function(message) {
   console.log('Client received message:', message);
   if (message === 'got user media') {
+    console.log('got user media');
     maybeStart();
-  } else if (message.type === 'offer') {
+  } 
+  else if (message.type === 'offer') {
     if (!isInitiator && !isStarted) {
+      console.log('!inInitiator && !isStarted');
       maybeStart();
     }
+    console.log('setRemoteDescription');
     pc.setRemoteDescription(new RTCSessionDescription(message));
+    console.log('doAnswer');
     doAnswer();
   } else if (message.type === 'answer' && isStarted) {
+    console.log('answer');
     pc.setRemoteDescription(new RTCSessionDescription(message));
   } else if (message.type === 'candidate' && isStarted) {
+    console.log('candidate');
     var candidate = new RTCIceCandidate({
       sdpMLineIndex: message.label,
       candidate: message.candidate
     });
     pc.addIceCandidate(candidate);
   } else if (message === 'bye' && isStarted) {
+    console.log('bye');
     handleRemoteHangup();
   }
 });
