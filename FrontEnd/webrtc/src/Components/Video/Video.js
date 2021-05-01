@@ -2,71 +2,101 @@ import React from 'react'
 import './Video.css'
 import socketio from 'socket.io-client'
 
+const pc_config = {
+    iceServers : [
+        {
+            urls : 'stun:stun.l.google.com:19302'
+        }
+    ]
+}
+
 class Video extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            localStream: null,
-            isInit : false,
-            pc : null
+            isInit: false,
+            socket: null
         }
     }
-    gotLocalMediaStream = (mediaStream) => {
-        document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
-        this.setState({ localStream : mediaStream })
+
+    logging = (type, data) => {
+        console.log(type)
+        console.log(data)
     }
-    handleLocalMediaStreamError = (error) => console.log('navigator.getUserMedia error: ', error)
 
     componentDidMount() {
-        const socket = socketio.connect('http://localhost:8080')
+        const socket = socketio.connect('http://3.131.100.170:8080/')
+        this.setState({ socket: socket })
 
         socket.on('joinRoom', (data) => {
-            console.log(data.isInit)
-            this.setState({isInit : data.isInit})
-            if(this.state.isInit){ // Init
-                navigator.mediaDevices.getUserMedia({ video: true })
-                .then(this.gotLocalMediaStream)
-                .catch(this.handleLocalMediaStreamError)
-            }
-            else{ // Client
-               
+            this.setState({ isInit: data.isInit })
+            if(!data.isInit)
+                sendSdpOffer()
+        })
+
+        const rtcPeerConnection = new RTCPeerConnection(pc_config)
+        const sendMessage = (type, payload) => { socket.emit('message', { type, payload }) }
+        const onMessage = (type, callback) => socket.on('message', message => {
+            (message.type === type && callback(message.payload))
+        })
+
+        const sendSdpOffer = async () => {
+            //요청을 보내는 사람
+            const rtcSessionDescriptionInit = await rtcPeerConnection.createOffer();
+            this.logging('sendOffer',rtcSessionDescriptionInit)
+            await rtcPeerConnection.setLocalDescription(rtcSessionDescriptionInit);
+            await sendMessage('SDP', rtcSessionDescriptionInit)
+        }
+
+        const sendSdpAnswer = async () => {
+            //요청을 받는사람
+            const rtcSessionDescriptionInit = await rtcPeerConnection.createAnswer();
+            this.logging('sendAnswer',rtcSessionDescriptionInit)
+            await rtcPeerConnection.setLocalDescription(rtcSessionDescriptionInit);
+            sendMessage('SDP', rtcSessionDescriptionInit);
+        }
+
+        navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then(mediaStream => {
+
+                document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
+
+                mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
+                // ?
+            })
+
+        rtcPeerConnection.addEventListener('negotiationneeded', () => { })
+
+        onMessage('SDP', async descriptionInit => {
+            const rtcSessionDescription = new RTCSessionDescription(descriptionInit);
+            this.logging('get',rtcSessionDescription)
+
+            //offer 입장에서는 answer를 받고 offer를 보내준다
+            //answer입장에서는 offer를 받는다
+            await rtcPeerConnection.setRemoteDescription(rtcSessionDescription);
+
+            if (descriptionInit.type === 'offer') {
+                await sendSdpAnswer();
             }
         })
-    }
 
-    handleIceCandidate = (event) => {
+        rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
+        onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
 
-    }
-
-    handleClickStart = (event) => {
-        navigator.mediaDevices.getUserMedia({video: true})
-        .then((mediaStream) => {
-            document.getElementsByClassName('remoteVideo')[0].srcObject = mediaStream
-        })
+        rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
     }
 
     render() {
-        if(this.state.isInit === true)
-            return (
-                <div>
-                    <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-                    <video className='localVideo' autoPlay playsInline />
-                    <video className='remoteVideo' autoPlay playsInline />
-                    <div>
-                        <button className='startButton' onClick={this.handleClickStart}>Start</button>
-                        <button className='callButton'>Call</button>
-                        <button className='hangupButton'>Hang Up</button>
-                    </div>
-                </div>
-            )
-        else
-            return(
+        return (
             <div>
                 <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-                    now you are client
-            </div>)
+                {/* <video className='localVideo' autoPlay playsInline style={{display:'none'}}/> */}
+                <video className='localVideo' autoPlay playsInline />
+                <video className='remoteVideo' autoPlay playsInline />
+            </div>
+        )
+
     }
 }
 export default Video
-
-

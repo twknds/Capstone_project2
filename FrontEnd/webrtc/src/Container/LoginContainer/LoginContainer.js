@@ -14,7 +14,7 @@ class LoginContainer extends React.Component{
     }
 
     postSet = async () =>{
-        axios.post('http://localhost:8080/', {
+        axios.post(`http://3.131.100.170:8080/login`, {
             id : this.state.id,
             pw : this.state.pw
         })
@@ -39,6 +39,7 @@ class LoginContainer extends React.Component{
         })
     }
 
+
     handleSubmit = (e) => {
         e.preventDefault()
         this.postSet()
@@ -47,10 +48,15 @@ class LoginContainer extends React.Component{
     render(){
         return(
             <div className = "LoginContainer">
+                <h1>로그인</h1>
                 <form onSubmit={this.handleSubmit}>
-                    <IdInput onChange={this.handleIDChange}/>
-                    <PwInput onChange={this.handlePWChange}/>
-                    <input type='submit' value='submit' />
+                    <p>
+                        <IdInput onChange={this.handleIDChange}/>
+                    </p>
+                    <p>
+                        <PwInput onChange={this.handlePWChange}/>
+                    </p>
+                    <input type='submit' value='Login' />
                 </form>
             </div>
         )
