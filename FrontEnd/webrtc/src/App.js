@@ -5,7 +5,6 @@ import {Header} from './Components/index'
 import {LoginContainer, VideoContainer} from './Container/index'
 import 'semantic-ui-css/semantic.min.css';
 
-
 class App extends React.Component{
   constructor(props){
     super(props)

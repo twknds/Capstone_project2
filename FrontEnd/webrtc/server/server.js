@@ -1,19 +1,21 @@
 const express = require('express')
 const bodyparser = require('body-parser')
 const cors = require('cors')
+const fs = require('fs')
 const app = express()
+const apps = express()
+const port = 8080
 const server = require('http').Server(app)
-// const socket = require('socket.io')
 const io = require('socket.io')(server,
     {
     cors: {
         origin: '*',
     }
 })
-const port = 8080
 
 app.use(cors())
 app.use(bodyparser.json())
+
 app.post('/',(req, res)=>{
     console.log(req.body)
     res.send({
@@ -25,7 +27,6 @@ server.listen(port, function() {
     console.log(`${port} is open`)
 })
 
-const room = 'serverRoom'
 var clients = 0
 
 io.on('connection', socket => {
@@ -33,14 +34,14 @@ io.on('connection', socket => {
         socket.emit('joinRoom',{isInit : true})
     else
         socket.emit('joinRoom',{isInit: false})
-    clients++
 
-    socket.join(room)
+    clients++
 
     console.log(`user connected : ${clients}`)
 
-    // io.sockets.emit('broadcast',{description:`${clients} clients connected!`})
-    // io.to(room).emit('joinRoom',{description:'You are now in room'})
+    socket.on('message', (message) => {
+        socket.broadcast.emit('message', message)
+    })
 
     socket.on('disconnect', () => {
         clients--
