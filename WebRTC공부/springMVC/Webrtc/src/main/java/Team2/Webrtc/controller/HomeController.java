@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 @RequiredArgsConstructor
 public class HomeController {
+    String serverIP = "210.204.40.17";
 
     /**
      * 노드 서버로 연결
@@ -19,18 +20,21 @@ public class HomeController {
     @GetMapping("/node")
     public String node(String id){
         log.info("node, id {}",id);
-        return "redirect:https://172.30.1.34:3000/";
+        return "redirect:https://210.204.40.39:3000/";
+//        return "redriect:https://"+serverIP+":3000/";
     }
 
     @GetMapping("/call")
     public String call(){
         log.info("call");
-        return "redirect:https://172.30.1.34:3000/call.html";
+        return "redirect:https://210.204.40.39:3000/call.html";
+//        return "redriect:https://"+serverIP+":3000/call.html";
     }
 
     @GetMapping("/callee")
     public String callee(){
         log.info("callee");
-        return "redirect:https://172.30.1.34:3000/callee.html";
+        return "redirect:https://210.204.40.39:3000/callee.html";
+//        return "redriect:https://"+serverIP+":3000/callee.html";
     }
 }
