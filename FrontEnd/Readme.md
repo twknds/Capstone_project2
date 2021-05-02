@@ -22,4 +22,4 @@ https://isolution.pro/ko/q/au14230984/ubuntu-20-04-naj-eun-ssl-boan-sujun-eul-se
 
 https://minhanpark.github.io/today-i-learned/apply-https/
 
-로드밸런서, 무료도메인, Route53, ACM, 버지니아 
+로드밸런서, 무료도메인, Route53, ACM, 버지니아 동부
