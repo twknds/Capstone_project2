@@ -16,7 +16,7 @@ const io = require('socket.io')(server,
 app.use(cors())
 app.use(bodyparser.json())
 
-app.post('/',(req, res)=>{
+app.post('/login',(req, res)=>{
     console.log(req.body)
     res.send({
         sucess: true

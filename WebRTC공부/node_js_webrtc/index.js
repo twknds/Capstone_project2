@@ -18,7 +18,7 @@ const options = {
 var fileServer = new(nodeStatic.Server)();
 let app = https.createServer(options,(req,res)=>{
   // console.log(fileServer)
-  fileServer.serve(req,res);
+  fileServer.server(req,res);
 }).listen(3000);
 
 console.log('Started chating server...');
