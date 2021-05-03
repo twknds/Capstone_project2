@@ -1,20 +1,25 @@
 const express = require('express')
-const bodyparser = require('body-parser')
 const cors = require('cors')
+const bodyparser = require('body-parser')
 const fs = require('fs')
 const app = express()
-const apps = express()
 const port = 8080
-const server = require('http').Server(app)
+const https = require('https')
+const server = https.createServer({
+        key : fs.readFileSync('./server/private.pem','utf-8'),
+        cert : fs.readFileSync('./server/public.pem','utf-8')
+},app)
 const io = require('socket.io')(server,
     {
     cors: {
         origin: '*',
+        methods:["GET","POST"]
     }
 })
 
 app.use(cors())
 app.use(bodyparser.json())
+
 
 app.post('/login',(req, res)=>{
     console.log(req.body)
@@ -48,3 +53,4 @@ io.on('connection', socket => {
         console.log(`user disconnected : ${clients} have left`)
     })
 })
+                                                              
