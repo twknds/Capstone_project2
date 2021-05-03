@@ -25,7 +25,7 @@ class Video extends React.Component {
     }
 
     componentDidMount() {
-        const socket = socketio.connect('https://18.221.65.255:8080/')
+        const socket = socketio.connect('https://54.90.211.22:8080/')
         this.setState({ socket: socket })
 
         socket.on('joinRoom', (data) => {
