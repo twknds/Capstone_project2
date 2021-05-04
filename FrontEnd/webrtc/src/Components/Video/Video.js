@@ -56,15 +56,17 @@ class Video extends React.Component {
             sendMessage('SDP', rtcSessionDescriptionInit);
         }
 
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
-            .then(mediaStream => {
 
-                document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
-
-                mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
-                // ?
-            })
+        if(this.state.isInit)
+            navigator.mediaDevices
+                .getUserMedia({ video: true, audio: false })
+                .then(mediaStream => {
+                    document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
+                    mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
+                    // ?
+                })
+        else
+            rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
 
         rtcPeerConnection.addEventListener('negotiationneeded', () => { })
 
@@ -84,19 +86,23 @@ class Video extends React.Component {
         rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
         onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
 
-        rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
+        
     }
 
     render() {
-        return (
+        if(this.state.isInit) // no remote
+            return (
+                <div>
+                    <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
+                    <video className='localVideo' autoPlay playsInline />
+                </div>
+            )
+        return( // else no need local
             <div>
                 <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-                {/* <video className='localVideo' autoPlay playsInline style={{display:'none'}}/> */}
-                <video className='localVideo' autoPlay playsInline />
                 <video className='remoteVideo' autoPlay playsInline />
             </div>
         )
-
     }
 }
 export default Video
