@@ -25,7 +25,7 @@ class Video extends React.Component {
     }
 
     componentDidMount() {
-        const socket = socketio.connect('https://54.90.211.22:8080/')
+        const socket = socketio.connect('https://34.201.135.5:8080/')
         this.setState({ socket: socket })
 
         socket.on('joinRoom', (data) => {
@@ -57,7 +57,7 @@ class Video extends React.Component {
         }
 
 
-        if(this.state.isInit)
+        // if(this.state.isInit)
             navigator.mediaDevices
                 .getUserMedia({ video: true, audio: false })
                 .then(mediaStream => {
@@ -65,8 +65,7 @@ class Video extends React.Component {
                     mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
                     // ?
                 })
-        else
-            rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
+        // else
 
         rtcPeerConnection.addEventListener('negotiationneeded', () => { })
 
@@ -86,23 +85,24 @@ class Video extends React.Component {
         rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
         onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
 
-        
+        rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
     }
 
     render() {
-        if(this.state.isInit) // no remote
+        // if(this.state.isInit) // no remote
             return (
                 <div>
                     <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
                     <video className='localVideo' autoPlay playsInline />
+                    <video className='remoteVideo' autoPlay playsInline />
                 </div>
             )
-        return( // else no need local
-            <div>
-                <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-                <video className='remoteVideo' autoPlay playsInline />
-            </div>
-        )
+        // return( // else no need local
+        //     <div>
+        //         <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
+        //         <video className='remoteVideo' autoPlay playsInline />
+        //     </div>
+        // )
     }
 }
 export default Video

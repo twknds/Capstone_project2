@@ -3,6 +3,7 @@ const cors = require('cors')
 const bodyparser = require('body-parser')
 const fs = require('fs')
 const app = express()
+const path = require('path')
 const port = 8080
 const https = require('https')
 const server = https.createServer({
@@ -17,9 +18,9 @@ const io = require('socket.io')(server,
     }
 })
 
+app.use(express.static(path.join(__dirname,"build")))
 app.use(cors())
 app.use(bodyparser.json())
-
 
 app.post('/login',(req, res)=>{
     console.log(req.body)
