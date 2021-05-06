@@ -8,6 +8,8 @@
 
 <img src="./img/5.png" width="1000" height="550" >
 
+<img src="./img/6.png" width="1000" height="550" >
+
 [무료 도메인 및 router53](https://st-soul.tistory.com/6)
 
 [로드밸런서 및 https 요청](https://helloinyong.tistory.com/149)
@@ -29,3 +31,6 @@ https://minhanpark.github.io/today-i-learned/apply-https/
 https://velog.io/@_junukim/CloudFront%EB%A1%9C-React%EC%95%B1-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0
 
 [FRONT APP 배포](https://velog.io/@_junukim/CloudFront%EB%A1%9C-React%EC%95%B1-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0)
+
+## 에러사항
+- 실제 배포까지 성공하고 msg가 주고가지만 stream이 연결이 안된다. 간헐적으로 가능.... (말이 되나..?)
