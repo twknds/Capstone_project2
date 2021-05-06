@@ -89,7 +89,6 @@ class Video extends React.Component {
     }
 
     render() {
-        // if(this.state.isInit) // no remote
             return (
                 <div>
                     <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
@@ -97,12 +96,6 @@ class Video extends React.Component {
                     <video className='remoteVideo' autoPlay playsInline />
                 </div>
             )
-        // return( // else no need local
-        //     <div>
-        //         <script src='https://webrtc.github.io/adapter/adapter-latest.js'></script>
-        //         <video className='remoteVideo' autoPlay playsInline />
-        //     </div>
-        // )
     }
 }
 export default Video
