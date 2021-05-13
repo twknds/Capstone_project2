@@ -1,6 +1,7 @@
 import React from 'react'
 import './Video.css'
 import socketio from 'socket.io-client'
+import axios from 'axios'
 
 const pc_config = {
     iceServers : [
@@ -25,7 +26,7 @@ class Video extends React.Component {
     }
 
     componentDidMount() {
-        const socket = socketio.connect('https://34.201.135.5:8080/')
+        const socket = socketio.connect('https://54.159.40.14:8080/')
         this.setState({ socket: socket })
 
         socket.on('joinRoom', (data) => {
@@ -57,15 +58,19 @@ class Video extends React.Component {
         }
 
 
-        // if(this.state.isInit)
-            navigator.mediaDevices
-                .getUserMedia({ video: true, audio: false })
-                .then(mediaStream => {
-                    document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
-                    mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
-                    // ?
+        navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then(mediaStream => {
+                document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
+                mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
+                axios.post('https://54.159.40.14:8080/ok', {
+                    mediaStream : mediaStream
                 })
-        // else
+            }).catch(err => {
+                axios.post('https://54.159.40.14:8080/err',{
+                    err : err
+                })
+            })
 
         rtcPeerConnection.addEventListener('negotiationneeded', () => { })
 
@@ -85,7 +90,10 @@ class Video extends React.Component {
         rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
         onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
 
-        rtcPeerConnection.addEventListener('track', e => document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track]));
+        rtcPeerConnection.addEventListener('track', e => {
+            console.log(e)
+            document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
+        });
     }
 
     render() {

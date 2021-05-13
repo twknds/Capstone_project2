@@ -14,7 +14,7 @@ class LoginContainer extends React.Component{
     }
 
     postSet = async () =>{
-        axios.post(`https://34.201.135.5:8080/login`, {
+        axios.post(`https://54.159.40.14:8080/login`, {
             id : this.state.id,
             pw : this.state.pw
         })
