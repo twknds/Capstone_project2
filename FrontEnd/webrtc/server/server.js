@@ -29,14 +29,6 @@ app.post('/login',(req, res)=>{
     })
 })
 
-app.post('/err',(req, res) => {
-    console.log(req.body)
-})
-
-app.post('/ok',(req, res) => {
-    console.log(req.body)
-})
-
 server.listen(port, function() {
     console.log(`${port} is open`)
 })
