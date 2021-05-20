@@ -33,4 +33,14 @@ https://velog.io/@_junukim/CloudFront%EB%A1%9C-React%EC%95%B1-%EB%B0%B0%ED%8F%AC
 [FRONT APP 배포](https://velog.io/@_junukim/CloudFront%EB%A1%9C-React%EC%95%B1-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0)
 
 ## 에러사항
-- 실제 배포까지 성공하고 msg가 주고가지만 stream이 연결이 안된다. 간헐적으로 가능.... (말이 되나..?)
+- ~~실제 배포까지 성공하고 msg가 주고가지만 stream이 연결이 안된다. 간헐적으로 가능.... (말이 되나..?)~~
+   - 해결
+   
+# 2021-05-20
+
+<img src="./img/2021-05-20-1.png" width="1600" height="900" >
+<img src="./img/2021-05-20-2.png" width="1600" height="900" >
+
+디자인 및 배포까지 완료하였다.
+
+**webRTC 종료**
