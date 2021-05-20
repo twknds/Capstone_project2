@@ -5,7 +5,7 @@ import {Video} from '../../Components'
 class VideoContainer extends React.Component{
     render(){
         return(
-        <div>
+        <div className = "VideoContainer">
             <Video />
         </div>)
     }

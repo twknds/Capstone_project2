@@ -85,7 +85,9 @@ class Video extends React.Component {
         if(isInit)
             return (
                 <div>
-                    <video className='localVideo' autoPlay playsInline />
+                    <p>
+                        <video className='localVideo' autoPlay playsInline />
+                    </p>
                     <video className='remoteVideo' autoPlay playsInline style={{display:"none"}}/>
                 </div>
             )
@@ -93,7 +95,9 @@ class Video extends React.Component {
             return (
                 <div>
                     <video className='localVideo' autoPlay playsInline style={{display:"none"}}/>
-                    <video className='remoteVideo' autoPlay playsInline />
+                    <p>
+                        <video className='remoteVideo' autoPlay playsInline />
+                    </p>
                 </div>
             )
     }

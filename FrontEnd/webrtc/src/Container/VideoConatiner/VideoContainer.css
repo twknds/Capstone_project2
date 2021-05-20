@@ -1,5 +1,13 @@
 .VideoContainer
 {
+  height: auto;
+  text-align: center;
+  position: absolute;
   max-width: 100%;
-  width: 320px;
+  width: 720px;
+  top:30rem;
+  left: 50%;
+  right:50%;
+  transform: translate(-50%, -50%);
+
 }
