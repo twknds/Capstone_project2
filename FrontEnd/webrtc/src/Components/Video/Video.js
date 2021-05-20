@@ -22,15 +22,33 @@ class Video extends React.Component {
 
     componentDidMount() {
         const socket = socketio.connect('https://54.159.40.14:8080/')
+        const rtcPeerConnection
         this.setState({ socket: socket })
 
         socket.on('joinRoom', (data) => {
             this.setState({ isInit: data.isInit })
-            if(!data.isInit)
+            rtcPeerConnection = new RTCPeerConnection(pc_config)
+            if(!data.isInit){
+                rtcPeerConnection.addEventListener('track', e => {
+                    console.log(e)
+                    console.log('this is not init')
+                    document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
+                })
                 sendSdpOffer()
+            }
+            else{
+                navigator.mediaDevices
+                .getUserMedia({ video: true, audio: false })
+                .then(mediaStream => {
+                        document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
+                        mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
+                })
+                rtcPeerConnection.addEventListener('track', e => {
+                    console.log(e)
+                })
+            }
         })
 
-        const rtcPeerConnection = new RTCPeerConnection(pc_config)
         const sendMessage = (type, payload) => { socket.emit('message', { type, payload }) }
         const onMessage = (type, callback) => socket.on('message', message => {
             (message.type === type && callback(message.payload))
@@ -50,16 +68,6 @@ class Video extends React.Component {
             sendMessage('SDP', rtcSessionDescriptionInit);
         }
 
-        navigator.mediaDevices
-            .getUserMedia({ video: true, audio: false })
-            .then(mediaStream => {
-                if(this.state.isInit){
-                    console.log('this is init')
-                    document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
-                    mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
-                }
-            })
-
         rtcPeerConnection.addEventListener('negotiationneeded', () => { })
 
         onMessage('SDP', async descriptionInit => {
@@ -77,13 +85,6 @@ class Video extends React.Component {
         onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
         //
 
-        rtcPeerConnection.addEventListener('track', e => {
-            console.log(e)
-            if(!this.state.isInit){
-                console.log('this is not init')
-                document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
-            }
-        });
     }
 
     render() {
