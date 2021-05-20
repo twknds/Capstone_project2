@@ -47,6 +47,19 @@ class Video extends React.Component {
                     console.log(e)
                 })
             }
+            rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
+            rtcPeerConnection.addEventListener('negotiationneeded', () => { })
+
+
+            onMessage('SDP', async descriptionInit => {
+                const rtcSessionDescription = new RTCSessionDescription(descriptionInit);
+
+                await rtcPeerConnection.setRemoteDescription(rtcSessionDescription);
+
+                if (descriptionInit.type === 'offer') {
+                    await sendSdpAnswer();
+                }
+            })
         })
 
         const sendMessage = (type, payload) => { socket.emit('message', { type, payload }) }
@@ -68,20 +81,7 @@ class Video extends React.Component {
             sendMessage('SDP', rtcSessionDescriptionInit);
         }
 
-        rtcPeerConnection.addEventListener('negotiationneeded', () => { })
-
-        onMessage('SDP', async descriptionInit => {
-            const rtcSessionDescription = new RTCSessionDescription(descriptionInit);
-
-            await rtcPeerConnection.setRemoteDescription(rtcSessionDescription);
-
-            if (descriptionInit.type === 'offer') {
-                await sendSdpAnswer();
-            }
-        })
-
         //건들 필요 x
-        rtcPeerConnection.addEventListener('icecandidate', e => e.candidate == null || sendMessage('ICE', e.candidate));
         onMessage('ICE', candidateInit => rtcPeerConnection.addIceCandidate(new RTCIceCandidate(candidateInit)))
         //
 
