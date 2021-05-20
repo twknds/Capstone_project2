@@ -54,6 +54,7 @@ class Video extends React.Component {
             .getUserMedia({ video: true, audio: false })
             .then(mediaStream => {
                 if(this.state.isInit){
+                    console.log('this is init')
                     document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
                     mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
                 }
@@ -78,8 +79,10 @@ class Video extends React.Component {
 
         rtcPeerConnection.addEventListener('track', e => {
             console.log(e)
-            if(!this.state.isInit)
+            if(!this.state.isInit){
+                console.log('this is not init')
                 document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
+            }
         });
     }
 
