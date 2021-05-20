@@ -76,8 +76,7 @@ class Video extends React.Component {
 
         rtcPeerConnection.addEventListener('track', e => {
             console.log(e)
-            if(this.state.isInit == false)
-                document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
+            document.getElementsByClassName('remoteVideo')[0].srcObject = new MediaStream([e.track])
         });
     }
 
