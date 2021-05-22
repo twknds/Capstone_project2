@@ -56,6 +56,11 @@ class Video extends React.Component {
                 document.getElementsByClassName('localVideo')[0].srcObject = mediaStream
                 mediaStream.getTracks().forEach(track => rtcPeerConnection.addTrack(track))
             })
+            .catch(err => {
+                console.error(err.message)
+                console.error(err.name)
+                console.error(err.code)
+            })
 
         rtcPeerConnection.addEventListener('negotiationneeded', () => { })
 
