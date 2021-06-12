@@ -10,6 +10,9 @@
 
 ![readme_video](https://user-images.githubusercontent.com/52579096/121768912-ca56fd00-cb9b-11eb-9069-69aac07bc92a.gif)
 
+풀영상 : https://www.youtube.com/watch?v=dojGGovQRak&t=10s
+(초반 좌측 영상은 jupyter에서 주행할 때의 전방 영상이며, 후반 좌측 영상은 WebRTC를 통해 웹 사이트에서 본 후방 영상임.)
+
 ## 시스템 구조도
 
 <img src="https://user-images.githubusercontent.com/52579096/121769630-a5fd1f80-cb9f-11eb-8d69-706f267554a4.JPG" alt="system_diagram" style="zoom: 50%;" />
