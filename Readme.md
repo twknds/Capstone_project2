@@ -34,3 +34,9 @@
 
 ## 프로젝트 추진 방법
 - 주 1회이상 미팅 진행(회의록)
+
+
+
+## 데모 영상(WebRTC + 자율주행)
+
+![readme_video](https://user-images.githubusercontent.com/52579096/121768912-ca56fd00-cb9b-11eb-9069-69aac07bc92a.gif)
